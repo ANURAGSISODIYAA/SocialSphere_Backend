@@ -6,6 +6,8 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.social.config.JwtProvider;
+import com.social.exception.UserException;
 import com.social.models.User;
 import com.social.repository.UserRepository;
 
@@ -16,26 +18,11 @@ public class UserServiceImpl implements UserService {
 	UserRepository userRepository;
 	
 	@Override
-	public User UserRegister(User user) {
-		
-		User newUser = new User();
-		newUser.setId(user.getId());
-		newUser.setFirstName(user.getFirstName());
-		newUser.setLastName(user.getLastName());
-		newUser.setEmail(user.getEmail());
-		newUser.setPassword(user.getPassword());
-		
-		User savedUser = userRepository.save(newUser);
-		
-		return savedUser;
-	}
-
-	@Override
-	public User findUserById(Integer id) throws Exception {
+	public User findUserById(Integer id) throws UserException {
 		
 		Optional<User> user = userRepository.findById(id);
 		if(user.isEmpty()) {
-			throw new Exception("User Not Found !!!");
+			throw new UserException("User Not Found !!!");
 		}
 		User user1 = user.get();
 		return user1;
@@ -48,26 +35,26 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public User followUser(Integer id1, Integer id2) throws Exception {
-		User user1 = findUserById(id1);
+	public User followUser(Integer reqUserId, Integer id2) throws UserException {
+		User reqUser = findUserById(reqUserId);
 		User user2 = findUserById(id2);
 		
-		user2.getFollowers().add(user1.getId());
-		user1.getFollowings().add(user2.getId());
+		user2.getFollowers().add(reqUser.getId());
+		reqUser.getFollowings().add(user2.getId());
 		
-		userRepository.save(user1);
+		userRepository.save(reqUser);
 		userRepository.save(user2);
 		
-		return user1;
+		return reqUser;
 	}
 
 	@Override
-	public User updateUser(User user,Integer id) throws Exception {
+	public User updateUser(User user,Integer id) throws UserException {
 
 		Optional<User> user1 = userRepository.findById(id);
 		User oldUser = user1.get();
 		if(user1.isEmpty()) {
-			throw new Exception("User Not Found");
+			throw new UserException("User Not Found");
 		}
 		if(oldUser.getFirstName()!=null) {
 			oldUser.setFirstName(user.getFirstName());
@@ -78,6 +65,9 @@ public class UserServiceImpl implements UserService {
 		if(oldUser.getPassword()!=null) {
 			oldUser.setPassword(user.getPassword());
 		}
+		if(oldUser.getGender()!=null) {
+			oldUser.setGender(user.getGender());
+		}
 		
 		User updatedUser = userRepository.save(oldUser);
 		return updatedUser;
@@ -87,6 +77,16 @@ public class UserServiceImpl implements UserService {
 	public List<User> searchUser(String query) {
 	
 		return userRepository.searchUser(query);
+	}
+
+	@Override
+	public User findUserByJwt(String jwt) {
+		
+		String email = JwtProvider.getEmailFromJwtToken(jwt);
+		
+		User user = userRepository.findByEmail(email);
+		
+		return user;
 	}
 
 }

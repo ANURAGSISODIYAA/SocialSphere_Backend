@@ -4,8 +4,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -29,22 +27,22 @@ public class Post {
 	private String video;
 	
 	private Date createdAt;
-    
 	
 	@ManyToOne
 	private User user;
 
 	@OneToMany
 	private List<User> like = new ArrayList<>();
+	
+	@OneToMany
+	private List<Comment> comments = new ArrayList<>();
 
 	public Post() {
 
 	}
 
-	
-
-	public Post(Integer postId, String caption, String image, String video, Date createdAt, User user,
-			List<User> like) {
+	public Post(Integer postId, String caption, String image, String video, Date createdAt, User user, List<User> like,
+			List<Comment> comments) {
 		super();
 		this.postId = postId;
 		this.caption = caption;
@@ -53,9 +51,8 @@ public class Post {
 		this.createdAt = createdAt;
 		this.user = user;
 		this.like = like;
+		this.comments = comments;
 	}
-
-
 
 	public Integer getPostId() {
 		return postId;
@@ -89,6 +86,14 @@ public class Post {
 		this.video = video;
 	}
 
+	public Date getCreatedAt() {
+		return createdAt;
+	}
+
+	public void setCreatedAt(Date createdAt) {
+		this.createdAt = createdAt;
+	}
+
 	public User getUser() {
 		return user;
 	}
@@ -105,18 +110,17 @@ public class Post {
 		this.like = like;
 	}
 
-
-
-	public Date getCreatedAt() {
-		return createdAt;
+	public List<Comment> getComments() {
+		return comments;
 	}
 
-
-
-	public void setCreatedAt(Date createdAt) {
-		this.createdAt = createdAt;
+	public void setComments(List<Comment> comments) {
+		this.comments = comments;
 	}
 
+	
+
+	
 	
 
 }
