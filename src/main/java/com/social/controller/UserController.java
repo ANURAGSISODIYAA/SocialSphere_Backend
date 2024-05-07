@@ -57,9 +57,9 @@ public class UserController {
 	}
 
 	@GetMapping("/api/user/search")
-	public List<User> SearchUserHandler(@RequestParam("query") String keyword) {
+	public List<User> SearchUserHandler(@RequestParam("query") String query) {
 
-		List<User> user = userService.searchUser(keyword);
+		List<User> user = userService.searchUser(query);
 		return user;
 	}
 

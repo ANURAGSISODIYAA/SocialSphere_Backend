@@ -57,7 +57,7 @@ public class AuthController {
 		return authResponse;
 	}
 	
-	@PostMapping("/sigin")
+	@PostMapping("/signin")
 	public AuthResponse signIn(@RequestBody LoginRequest loginRequest) {
 		  
 		Authentication auth = authentication(loginRequest.getEmail(), loginRequest.getPassword());

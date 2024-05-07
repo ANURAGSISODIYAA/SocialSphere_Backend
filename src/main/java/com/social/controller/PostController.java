@@ -54,13 +54,13 @@ public class PostController {
 		return new ResponseEntity<>(post, HttpStatus.OK);
 	}
 
-	@GetMapping("/user/post/{userid}")
+	@GetMapping("/api/user/post/{userid}")
 	public ResponseEntity<List<Post>> findPostByUserId(@PathVariable Integer userid) throws Exception {
 		List<Post> lpost = postService.findPostByUserId(userid);
 		return new ResponseEntity<>(lpost, HttpStatus.OK);
 	}
 
-	@GetMapping("/post")
+	@GetMapping("/api/all/posts")
 	public ResponseEntity<List<Post>> findAllPostHandler() throws Exception {
 		List<Post> lpost = postService.findAllPost();
 		return new ResponseEntity<>(lpost, HttpStatus.OK);
@@ -73,7 +73,7 @@ public class PostController {
 		return new ResponseEntity<>(post, HttpStatus.OK);
 	}
 
-	@PutMapping("/post/like/{postid}")
+	@PutMapping("/api/post/like/{postid}")
 	public ResponseEntity<Post> likePostHandler(@PathVariable Integer postid, @RequestHeader("Authorization") String jwt) throws Exception {
 		User reqUser = userService.findUserByJwt(jwt);
 		Post post = postService.likePost(postid, reqUser.getId());

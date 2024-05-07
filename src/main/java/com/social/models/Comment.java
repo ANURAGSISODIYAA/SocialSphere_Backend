@@ -8,8 +8,8 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 
 @Entity
 public class Comment {
@@ -23,7 +23,7 @@ public class Comment {
 	@ManyToOne
 	private User user;
 	
-	@ManyToMany
+	@OneToMany
 	private List<User> liked = new ArrayList<>();
 	
 	private LocalDateTime createdAT;
@@ -32,9 +32,8 @@ public class Comment {
 		
 	}
 
-	public Comment(Integer cid, String content, User user, List<User> liked, LocalDateTime createdAT) {
+	public Comment(String content, User user, List<User> liked, LocalDateTime createdAT) {
 		super();
-		this.cid = cid;
 		this.content = content;
 		this.user = user;
 		this.liked = liked;
