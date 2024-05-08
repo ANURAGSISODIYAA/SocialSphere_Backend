@@ -47,7 +47,7 @@ public class AppConfig {
 			public CorsConfiguration getCorsConfiguration(HttpServletRequest request) {
 			    CorsConfiguration cfg = new CorsConfiguration();
 			    cfg.setAllowedOrigins(Arrays.asList("http://localhost:3000",
-			    		"https://socialsphere-aoelr58vj-anurag-sisodiyas-projects.vercel.app"));
+			    		"https://socialspherecom-anurag-sisodiyas-projects.vercel.app"));
 			    cfg.setAllowedMethods(Collections.singletonList("*"));
 			    cfg.setAllowCredentials(true);
 			    cfg.setAllowedHeaders(Collections.singletonList("*"));
